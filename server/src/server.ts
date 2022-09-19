@@ -1,17 +1,97 @@
 import express from "express";
+import cors from "cors";
+
+import { PrismaClient } from "@prisma/client";
+import { convertHourStringToMinutes } from "./utils/convert-hour-string-to-minutes";
+import { convertMinutesToHourString } from "./utils/convert-minutes-to-hour-string";
 
 const app = express();
 
-app.get("/ads", (req, res) => {
-  res.json([
-    { id: 1, name: "Ad 1" },
-    { id: 2, name: "Ad 2" },
-    { id: 3, name: "Ad 3" },
-    { id: 4, name: "Ad 4" },
-    { id: 5, name: "Ad 5" },
-  ]);
+app.use(express.json());
+app.use(cors());
+
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn"],
+});
+
+app.get("/games", async (req, res) => {
+  const games = await prisma.game.findMany({
+    include: {
+      _count: {
+        select: {
+          ads: true,
+        },
+      },
+    },
+  });
+  res.json(games);
+})
+
+app.post("/games/:id/ads", async (req, res) => {
+  const gameId = req.params.id;
+  const body: any = req.body;
+
+  const ad =  await prisma.ad.create({
+    data:{
+      id: body.id,
+      gameId: gameId,
+      name: body.name,
+      yearsPlaying: body.yearsPlaying,
+      discord: body.discord,
+      weekDays: body.weekDays.join(','),
+      hourStart: convertHourStringToMinutes(body.hourStart),
+      hourEnd: convertHourStringToMinutes(body.hourEnd),
+      useVoiceChannel: body.useVoiceChannel,
+    }  
+})
+ return res.status(201).json(ad);
+});
+
+app.get("/games/:id/ads", async (req, res) => {
+    const gameId = req.params.id;
+    const ads = await prisma.ad.findMany({
+      select: {
+        id: true,
+        name: true,
+        weekDays: true,
+        useVoiceChannel: true,
+        yearsPlaying: true,
+        hourStart: true,
+        hourEnd: true,
+      },
+      where: {
+        gameId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
+    });
+  res.json(ads.map(ad => ({
+    ...ad,
+    weekDays: ad.weekDays.split(','),
+    hourStart: convertMinutesToHourString(ad.hourStart),
+    hourEnd: convertMinutesToHourString(ad.hourEnd),
+    })));
+});
+
+app.get("/ads/:id/discord", async (req, res) => {
+  const adId = req.params.id;
+
+  const ad =  await prisma.ad.findUniqueOrThrow({
+    where: {
+      id: adId,
+    },
+    select: {
+     discord: true,
+    }
+  });
+
+  res.json({
+    discord: ad.discord,
+  });
 });
 
 app.listen(3333, () => {
   console.log("Server on port 3333");
 });
+
