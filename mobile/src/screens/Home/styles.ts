@@ -17,4 +17,12 @@ export const styles = StyleSheet.create({
     paddingRight: 64,
   },
 
+  cardImage: {
+    borderColor: 'black',
+    borderWidth: 0.5,
+    height: 120,
+    width: 120,
+    resizeMode: 'cover'
+  },
+
 });

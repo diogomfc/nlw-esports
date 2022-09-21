@@ -1,38 +1,50 @@
-export const GAMES = [
+export const UTILS_GAMES = [
   {
     id: '1',
-    name: 'League of Legends',
-    ads: '4',
-    cover: require('../assets/games/game-1.png')
+    title: 'League of Legends',
+    _count:{
+      ads: 4,
+    },
+    bannerUrl: "https://static-cdn.jtvnw.net/ttv-boxart/32399_IGDB-285x380.jpg"
   },
   {
     id: '2',
-    name: 'Dota 2',
-    ads: '3',
-    cover: require('../assets/games/game-2.png')
+    title: 'Dota 2',
+    _count:{
+      ads: 4,
+    },
+    bannerUrl: "https://static-cdn.jtvnw.net/ttv-boxart/511224-285x380.jpg')"
   },
   {
     id: '3',
-    name: 'CS-GO',
-    ads: '2',
-    cover: require('../assets/games/game-3.png')
+    title: 'CS-GO',
+    _count:{
+      ads: 4,
+    },
+    bannerUrl: "https://static-cdn.jtvnw.net/ttv-boxart/18122-285x380.jpg"
   },
-  {
-    id: '4',
-    name: 'Apex',
-    ads: '3',
-    cover: require('../assets/games/game-4.png')
-  },
-  {
-    id: '5',
-    name: 'Fortnite',
-    ads: '5',
-    cover: require('../assets/games/game-5.png')
-  },
-  {
-    id: '6',
-    name: 'World of Warcraft',
-    ads: '2',
-    cover: require('../assets/games/game-6.png')
-  },
+  // {
+  //   id: '4',
+  //   title: 'Apex',
+  //   _count:{
+  //     ads: 4,
+  //   },
+  //   bannerUrl: require('../assets/games/game-4.png')
+  // },
+  // {
+  //   id: '5',
+  //   title: 'Fortnite',
+  //   _count:{
+  //     ads: 4,
+  //   },
+  //   bannerUrl: require('../assets/games/game-5.png')
+  // },
+  // {
+  //   id: '6',
+  //   title: 'World of Warcraft',
+  //   _count:{
+  //     ads: 4,
+  //   },
+  //   bannerUrl: require('../assets/games/game-6.png')
+  // },
 ];
